@@ -2,18 +2,16 @@ import { readFileSync } from 'node:fs';
 import { exit } from 'node:process';
 
 let calibrationValueList: number[] = []
+const digitRegex = /(\d)/g;
 
 try {
-    const firstDigitRegex = /^[^\d]*(\d)/; // first digit
-    const lastDigitRegex = /(\d)(?!.*\d)/; // last digit
 
     const data = readFileSync('./input.txt', 'utf-8');
     data.split(/\r?\n/).forEach(line => {
-        const matchFirst = line.match(firstDigitRegex);
-        const firstDigit = matchFirst ? matchFirst[1] : "";
-
-        const matchLast = line.match(lastDigitRegex);
-        const lastDigit = matchLast ? matchLast[1] : "";
+        const matchesIt = line.matchAll(digitRegex);
+        const matchedGroupValues = [...matchesIt].map(match => match[1]);
+        const firstDigit = matchedGroupValues[0];
+        const lastDigit = matchedGroupValues.at(-1) ?? '';
 
         if (firstDigit === '' || lastDigit === '') {
             throw Error(`Could not match digit in string: ${line}`);
