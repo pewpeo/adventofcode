@@ -56,6 +56,7 @@ try {
         return game;
     });
 
+    // part 1
     const possibleGameIds = gameList.map(game => {
         for (const play of game.playList) {
             if (play.red > playMax.red || play.green > playMax.green || play.blue > playMax.blue) {
@@ -66,6 +67,19 @@ try {
     });
 
     console.log(`sum of possible game ids: ${possibleGameIds.reduce((sum, current) => sum + current, 0)}`);
+
+    // part 2
+    const powerMinimumCubes = gameList.map(game => {
+        const max: Play = { red: 0, green: 0, blue: 0 };
+        for (const play of game.playList) {
+            max.red = play.red > max.red ? play.red : max.red;
+            max.green = play.green > max.green ? play.green : max.green;
+            max.blue = play.blue > max.blue ? play.blue : max.blue;
+        }
+        return max.red * max.green * max.blue;
+    });
+
+    console.log(`sum of power of minimum set of cubes: ${powerMinimumCubes.reduce((sum, current) => sum + current, 0)}`);
 
 } catch (err) {
     if (err instanceof Error) {
