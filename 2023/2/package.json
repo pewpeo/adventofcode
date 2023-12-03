@@ -1,0 +1,20 @@
+{
+  "name": "2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "npx tsc -b",
+    "ci": "yarn install --frozen-lockfile",
+    "clean": "npx tsc -b --clean",
+    "nuke": "yarn clean && rm -rf ./node_modules",
+    "ts": "npx ts-node src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {}
+}
