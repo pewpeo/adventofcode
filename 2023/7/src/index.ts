@@ -19,11 +19,12 @@ class Play {
 
     // zero index is unused
 
-    // 15 for A = 14 -> 2 -> 1 for A in straight
+    // 15 for A = 14 -> 2 -> 1 for J in part 2
     handAsNumbers: number[] = []
 
     /// count for each value in the hand
     countByValue = new Array<number>(15).fill(0); // 0
+    countJokers = 0;
 
     // idx ^= count by value --> amount, i.e. how often a count was achieved in a play
     // example: 
@@ -44,12 +45,20 @@ class Play {
     }
 
     public valueToNumber(c: string): number {
-        return c === 'A' ? 14 : c === 'T' ? 10 : c === 'J' ? 11 : c === 'Q' ? 12 : c === 'K' ? 13 : Number(c);
+        // J -> 1 for part 2
+        return c === 'A' ? 14 : c === 'T' ? 10 : c === 'J' ? 1 : c === 'Q' ? 12 : c === 'K' ? 13 : Number(c);
     }
     public eval() {
         [...this.handAsNumbers].forEach(value => {
-            this.countByValue[value]++;
+            if (value == 1) // J
+                this.countJokers++;
+            else
+                this.countByValue[value]++;
         });
+        // add amount of jokers to maximum counted value
+        const maxCountIdx = this.countByValue.reduce((maxIdx, current, idx, arr) => current > arr[maxIdx] ? idx : maxIdx, 0);
+        this.countByValue[maxCountIdx] += this.countJokers;
+
         this.countByValue.forEach(
             count => count && this.countByPlay[count]++
         );
